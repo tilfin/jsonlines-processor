@@ -1,0 +1,19 @@
+{
+  "name": "json-log-stream",
+  "version": "0.1.0",
+  "description": "JSON log stream and CLI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "jls": "index.js"
+  },
+  "author": "Toshimitsu Takahashi",
+  "license": "MIT",
+  "dependencies": {
+    "event-stream": "^3.3.4",
+    "promised-lifestream": "^0.6.0",
+    "readline-transform": "^0.9.0"
+  }
+}
