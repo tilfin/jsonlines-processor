@@ -9,11 +9,13 @@ const ReadlineTransform = require('readline-transform')
 let proc = null;
 if (process.argv.length !== 2) {
   const procScriptPath = process.argv.pop()
+  let relPath
   try {
-    const relPath = path.resolve(process.cwd(), procScriptPath)
+    relPath = path.resolve(process.cwd(), procScriptPath)
     proc = require(relPath)
   } catch(e) {
     console.error(`Failed to load ${relPath}`)
+    console.error(e)
     process.exit(1)
   }
 }
