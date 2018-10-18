@@ -2,6 +2,8 @@
 
 JSON log stream processor
 
+A JSON log is called newline-delimited JSON and used for structured logs.
+
 ## Install
 
 ```
