@@ -1,8 +1,7 @@
 #! /usr/bin/env node
 
 const path = require('path')
-const stream = require('stream')
-const es = require('event-stream')
+const { Transform } = require('stream')
 const PromisedLife = require('promised-lifestream')
 const ReadlineTransform = require('readline-transform')
 
@@ -39,31 +38,40 @@ module.exports = async (item) => {
 PromisedLife([
   process.stdin,
   new ReadlineTransform({ skipEmpty: true }),
-  es.map(function (line, cb) {
-    try {
-      const item = JSON.parse(line)
-      cb(null, item)
-    } catch(e) {
-      cb(e)
-    }
-  }),
-  es.map(function (item, cb) {
-    proc(item).then(result => cb(null, result)).catch(cb)
-  }),
-  es.map(function (result, cb) {
-    if (result == null) {
-      cb(null);
-      return;
-    }
-
-    try {
-      if (typeof result === 'string') {
-        cb(null, result + "\n")
-      } else {
-        cb(null, JSON.stringify(result) + "\n")
+  new Transform({
+    objectMode: true,
+    transform(line, _, cb) {
+      try {
+        const item = JSON.parse(line)
+        cb(null, item)
+      } catch(e) {
+        cb(e)
       }
-    } catch(e) {
-      cb(e)
+    }
+  }),
+  new Transform({
+    objectMode: true,
+    transform(item, _, cb) {
+      proc(item).then(result => cb(null, result)).catch(cb)
+    }
+  }),
+  new Transform({
+    objectMode: true,
+    transform(result, _, cb) {
+      if (result == null) {
+        cb(null);
+        return;
+      }
+
+      try {
+        if (typeof result === 'string') {
+          cb(null, result + "\n")
+        } else {
+          cb(null, JSON.stringify(result) + "\n")
+        }
+      } catch(e) {
+        cb(e)
+      }
     }
   }),
   process.stdout
