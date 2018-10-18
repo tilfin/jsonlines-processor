@@ -15,11 +15,19 @@ $ npm install -g json-log-stream
 ### Create proc.js
 
 ```js
-module.exports = async (item) => {
+exports.process = async (item) => {
   // filter
   if (item.target === 'my_require') {
     return item;
   }
+}
+
+// Optional
+exports.finalize = async (items) => {
+  // sort
+  return items.sort((a, b) => {
+    return a - b
+  })
 }
 ```
 
