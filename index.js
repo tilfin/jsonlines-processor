@@ -3,7 +3,8 @@
 const path = require('path')
 const { Transform } = require('stream')
 const PromisedLife = require('promised-lifestream')
-const ReadlineTransform = require('readline-transform')
+const Helper = require('./lib/helper')
+const transformers = require('./lib/transformers')
 
 let logic = null;
 if (process.argv.length !== 2) {
@@ -81,18 +82,8 @@ const JsonizeTransform = new Transform({
 
 const streams = [
   process.stdin,
-  new ReadlineTransform({ skipEmpty: true }),
-  new Transform({
-    objectMode: true,
-    transform(line, _, cb) {
-      try {
-        const item = JSON.parse(line)
-        cb(null, item)
-      } catch(e) {
-        cb(e)
-      }
-    }
-  }),
+  transformers.createReadline(),
+  transformers.createJSONParser(),
   new Transform({
     objectMode: true,
     transform(item, _, cb) {
@@ -104,11 +95,13 @@ const streams = [
 if (finalize) {
   PromisedLife(streams, { needResult: true })
   .then(result => {
-    return [].concat(finalize(result))
+    const finalizer = new Helper(finalize)
+    return finalizer.execute(result)
   })
   .then(result => {
+    const results = [].concat(result)
     return new Promise((resolve, reject) => {
-      for (const item of result) {
+      for (const item of results) {
         JsonizeTransform._transform(item, null, (err, str) => {
           if (err) reject(err)
           else if (str) process.stdout.write(str)

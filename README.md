@@ -23,11 +23,9 @@ exports.process = async (item) => {
 }
 
 // Optional
-exports.finalize = async (items) => {
+exports.finalize = async function(items) {
   // sort
-  return items.sort((a, b) => {
-    return a - b
-  })
+  return this.sortBy(items, 'age')
 }
 ```
 
