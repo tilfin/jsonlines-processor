@@ -27,6 +27,16 @@ exports.finalize = async function(items) {
   // sort
   return this.sortBy(items, 'age')
 }
+
+exports.before = async function(items) {
+  // const anotherLogs = await this.readJSONLogFile('./another.log')
+  // const userMap = this.keyBy(anotherLogs, 'user.name')
+  // await startServer()
+}
+
+exports.after = async function(items) {
+  // await shutdownServer()
+}
 ```
 
 ### Run command

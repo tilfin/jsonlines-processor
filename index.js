@@ -44,41 +44,41 @@ exports.finalize = async (items) => {
   process.exit(2)
 }
 
-const { proc, finalize } = (() => {
+const { proc, finalize, before, after } = (() => {
   if (typeof logic === 'object') {
     return {
       proc: logic.process,
-      finalize: logic.finalize
+      finalize: logic.finalize,
+      before: logic.before || function() {
+        return Promise.resolve()
+      },
+      after: logic.after || function() {
+        return Promise.resolve()
+      }
     }
   } else {
     // for v0.1.1 or earlier
     return {
       proc: logic,
-      finalize: null
+      finalize: null,
+      before: function() {
+        return Promise.resolve()
+      },
+      after: function() {
+        return Promise.resolve()
+      }
     }
   }
 })()
 
 
-const JsonizeTransform = new Transform({
-  objectMode: true,
-  transform(result, _, cb) {
-    if (result == null) {
-      cb(null);
-      return;
-    }
-
-    try {
-      if (typeof result === 'string') {
-        cb(null, result + "\n")
-      } else {
-        cb(null, JSON.stringify(result) + "\n")
-      }
-    } catch(e) {
-      cb(e)
-    }
+function convertItemToStr(item) {
+  if (typeof item === 'string') {
+    return item + "\n"
+  } else {
+    return JSON.stringify(item) + "\n"
   }
-})
+}
 
 const streams = [
   process.stdin,
@@ -93,30 +93,58 @@ const streams = [
 ]
 
 if (finalize) {
-  PromisedLife(streams, { needResult: true })
+  new Helper(before).execute()
+  .then(() => {
+    return PromisedLife(streams, { needResult: true })
+  })
   .then(result => {
     const finalizer = new Helper(finalize)
     return finalizer.execute(result)
   })
   .then(result => {
     const results = [].concat(result)
-    return new Promise((resolve, reject) => {
-      for (const item of results) {
-        JsonizeTransform._transform(item, null, (err, str) => {
-          if (err) reject(err)
-          else if (str) process.stdout.write(str)
-        })
+    for (let item of results) {
+      if (item == null) continue
+
+      try {
+        process.stdout.write(convertItemToStr(item))
+      } catch(e) {
+        throw e
       }
-    })
+    }
+  })
+  .then(() => {
+    return new Helper(after).execute()
   })
   .catch(err => {
     process.stderr.write(err.toString())
   })
 } else {
+  const JsonizeTransform = new Transform({
+    objectMode: true,
+    transform(item, _, cb) {
+      if (item == null) {
+        cb(null);
+        return
+      }
+
+      try {
+        cb(null, convertItemToStr(item))
+      } catch(e) {
+        cb(e)
+      }
+    }
+  })
   streams.push(JsonizeTransform)
   streams.push(process.stdout)
 
-  PromisedLife(streams)
+  new Helper(before).execute()
+  .then(() => {
+    return PromisedLife(streams)
+  })
+  .then(() => {
+    return new Helper(after).execute()
+  })
   .catch(err => {
     process.stderr.write(err.toString())
   })
