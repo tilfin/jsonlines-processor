@@ -1,5 +1,8 @@
 # json-log-stream
 
+[![NPM Version][npm-image]][npm-url]
+[![Build Status](https://travis-ci.org/tilfin/json-log-stream.svg?branch=master)](https://travis-ci.org/tilfin/json-log-stream)
+
 JSON log stream processor
 
 A JSON log is called newline-delimited JSON and used for structured logs.
@@ -15,11 +18,27 @@ $ npm install -g json-log-stream
 ### Create proc.js
 
 ```js
-module.exports = async (item) => {
+exports.process = async (item) => {
   // filter
   if (item.target === 'my_require') {
     return item;
   }
+}
+
+// Optional
+exports.finalize = async function(items) {
+  // sort
+  return this.sortBy(items, 'age')
+}
+
+exports.before = async function(items) {
+  // const anotherLogs = await this.readJSONLogFile('./another.log')
+  // const userMap = this.keyBy(anotherLogs, 'user.name')
+  // await startServer()
+}
+
+exports.after = async function(items) {
+  // await shutdownServer()
 }
 ```
 
@@ -28,3 +47,10 @@ module.exports = async (item) => {
 ```
 $ gunzip -c application-json.log.gz | jls proc.js > output_json.log
 ```
+
+## License
+
+  [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/json-log-stream.svg
+[npm-url]: https://npmjs.org/package/json-log-stream
