@@ -1,6 +1,6 @@
 {
   "name": "json-log-stream",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "JSON log stream and CLI",
   "main": "index.js",
   "scripts": {
