@@ -116,7 +116,7 @@ if (finalize) {
     }
   })
   .then(() => {
-    return new Helper(after).execute()
+    return new Helper(after).execute(...argv)
   })
   .catch(err => {
     process.stderr.write(err.toString())
@@ -140,12 +140,12 @@ if (finalize) {
   streams.push(JsonizeTransform)
   streams.push(process.stdout)
 
-  new Helper(before).execute()
+  new Helper(before).execute(...argv)
   .then(() => {
     return PromisedLife(streams)
   })
   .then(() => {
-    return new Helper(after).execute()
+    return new Helper(after).execute(...argv)
   })
   .catch(err => {
     process.stderr.write(err.toString())
