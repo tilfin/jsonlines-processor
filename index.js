@@ -7,8 +7,8 @@ const Helper = require('./lib/helper')
 const transformers = require('./lib/transformers')
 
 let logic = null;
-if (process.argv.length !== 2) {
-  const procScriptPath = process.argv.pop()
+if (process.argv.length > 2) {
+  const procScriptPath = process.argv[2]
   let relPath
   try {
     relPath = path.resolve(process.cwd(), procScriptPath)
@@ -19,6 +19,8 @@ if (process.argv.length !== 2) {
     process.exit(1)
   }
 }
+
+const argv = process.argv.slice(3)
 
 if (!logic) {
   console.info('Usage) json-log-stream <logic.js> < STDIN > STDOUT')
@@ -93,7 +95,7 @@ const streams = [
 ]
 
 if (finalize) {
-  new Helper(before).execute()
+  new Helper(before).execute(...argv)
   .then(() => {
     return PromisedLife(streams, { needResult: true })
   })

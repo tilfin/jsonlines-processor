@@ -1,4 +1,6 @@
-before { red: { foo: 4, bar: { id: 1, color: 'red', time: 348 } },
+before [ [ '100', 'aaa', '300' ],
+  [ '101', 'bbb', '301' ],
+  [ '102', 'ccc', '302' ] ] { red: { foo: 4, bar: { id: 1, color: 'red', time: 348 } },
   green: { foo: 10, bar: { id: 2, color: 'green', time: 23 } },
   blue: { foo: 3, bar: { id: 3, color: 'blue', time: 159 } } }
 {"foo":10,"bar":{"id":2,"color":"green","time":23}}
