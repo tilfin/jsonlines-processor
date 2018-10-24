@@ -1,7 +1,7 @@
-# json-log-stream
+# jsonline-processor
 
 [![NPM Version][npm-image]][npm-url]
-[![Build Status](https://travis-ci.org/tilfin/json-log-stream.svg?branch=master)](https://travis-ci.org/tilfin/json-log-stream)
+[![Build Status](https://travis-ci.org/tilfin/jsonline-processor.svg?branch=master)](https://travis-ci.org/tilfin/jsonline-processor)
 
 JSON log stream processor
 
@@ -10,7 +10,7 @@ A JSON log is called newline-delimited JSON and used for structured logs.
 ## Install
 
 ```
-$ npm install -g json-log-stream
+$ npm install -g jsonline-processor
 ```
 
 ## How to Use
@@ -52,5 +52,5 @@ $ gunzip -c application-json.log.gz | jls proc.js > output_json.log
 
   [MIT](LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/json-log-stream.svg
-[npm-url]: https://npmjs.org/package/json-log-stream
+[npm-image]: https://img.shields.io/npm/v/jsonline-processor.svg
+[npm-url]: https://npmjs.org/package/jsonline-processor

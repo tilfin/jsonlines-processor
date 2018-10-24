@@ -1,7 +1,7 @@
 {
-  "name": "json-log-stream",
-  "version": "0.3.2",
-  "description": "JSON log stream and CLI",
+  "name": "jsonline-processor",
+  "version": "0.4.0",
+  "description": "JSON Lines streaming processor for CLI",
   "main": "index.js",
   "scripts": {
     "test": "./test/run.sh"
