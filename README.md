@@ -18,7 +18,7 @@ $ npm install -g jsonlines-processor
 ### Create logic.js
 
 ```js
-exports.process = async (item) => {
+exports.process = async function(item) {
   // filter
   if (item.target === 'my_require') {
     return item;
@@ -45,7 +45,88 @@ exports.after = async function(items) {
 ### Run command
 
 ```
-$ gunzip -c application-json.log.gz | jls proc.js > output_json.log
+$ gunzip -c application-json.log.gz | jlp proc.js > output_json.log
+```
+
+## Helper function
+
+Following utility methods can be called in `process`, `finalize`, `before` or `after` functions
+
+### sort(items, [key], [direct])
+
+#### Arguments
+* items:Array - The array to process
+* [key]:String - Target field name. item itself if not specified
+* [direct]:String - Ascending if not specified, else descending
+
+#### Returns
+* Array - Returns the new array of sorted items
+
+### keyBy(items, key)
+
+#### Arguments
+* items:Array - The array to process
+* key:String - The iteratee to transform key
+
+#### Returns
+* Object - Returns the composed aggregate object.
+
+### sum(items, [key])
+
+#### Arguments
+* items:Array - The array to process
+* [key]:String - Target field name. item itself if not specified
+
+#### Returns
+* Number - Returns the total value for each items
+
+### readJSONLinesFile(fileName)
+
+#### Arguments
+* fileName:String - JSON Lines file path
+
+#### Returns
+* Array - Returns the new array of JSON object
+
+### readTSVFile(fileName)
+
+#### Arguments
+* fileName:String - TSV file path
+
+#### Returns
+* Array - Returns the new array of array item
+
+## Examples
+
+#### example-json.log
+```json
+{"name":"Hanako","age":16,"score":41}
+{"name":"Taro","age":18,"score":81}
+{"name":"Mike","age":15,"score":72}
+{"name":"Ken","age":17,"score":90}
+```
+
+#### logic1.js
+Extracting the name and score of only item whose age is greater than 16, and sorting items by their score in descending order
+
+```js
+exports.process = async ({ name, age, score }) => {
+  if (age > 16) {
+    return { name, score }
+  }
+}
+
+exports.finalize = async function(items) {
+  return this.sort(items, 'score', 'desc')
+}
+```
+
+#### Result
+
+```
+$ jlp logic1.js < example-json.log
+{"name":"Ken",score:90}
+{"name":"Taro",score:81}
 ```
 
 ## License
