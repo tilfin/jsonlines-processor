@@ -25,10 +25,10 @@ const argv = process.argv.slice(3)
 if (!logic) {
   console.info('Usage) jlp <logic.js> < STDIN > STDOUT')
   console.info(`
-logic.js example
----------------
-
-exports.process = async (item) => {
+/*
+ logic.js example
+ */
+exports.process = async function(item) {
   // filter
   if (item.target === 'my_require') {
     return item;
@@ -36,11 +36,9 @@ exports.process = async (item) => {
 }
 
 // Optional
-exports.finalize = async (items) => {
+exports.finalize = async function(items) {
   // sort
-  return items.sort((a, b) => {
-    return a - b
-  })
+  return this.sort(items)
 }
 `)
   process.exit(2)
