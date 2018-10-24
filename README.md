@@ -28,7 +28,7 @@ exports.process = async (item) => {
 // Optional
 exports.finalize = async function(items) {
   // sort
-  return this.sortBy(items, 'age')
+  return this.sort(items, 'age')
 }
 
 exports.before = async function(cliArg1, cliArg2) {

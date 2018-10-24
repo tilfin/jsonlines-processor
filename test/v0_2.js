@@ -7,7 +7,7 @@ exports.process = async (item) => {
 exports.finalize = async function(items) {
   const sum1 = this.sum(items, 'foo')
   const sum2 = this.sum([1, 2, 3])
-  return this.sortBy(items, 'bar.time').concat(sum1, sum2)
+  return this.sort(items, 'bar.time').concat(sum1, sum2)
 }
 
 exports.before = async function(tsvFile) {
