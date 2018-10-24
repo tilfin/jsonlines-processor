@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# json-log-stream tests
+# jsonline-processor tests
 #
 set -e
 
