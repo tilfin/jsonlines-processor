@@ -32,7 +32,7 @@ exports.finalize = async function(items) {
 }
 
 exports.before = async function(cliArg1, cliArg2) {
-  // const anotherLogs = await this.readJSONLogFile('./another.log')
+  // const anotherLogs = await this.readJSONLinesFile('./another.log')
   // const userMap = this.keyBy(anotherLogs, 'user.name')
   // await startServer()
 }

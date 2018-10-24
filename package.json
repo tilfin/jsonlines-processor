@@ -1,6 +1,6 @@
 {
   "name": "jsonlines-processor",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "JSON Lines streaming processor for CLI",
   "main": "index.js",
   "scripts": {
