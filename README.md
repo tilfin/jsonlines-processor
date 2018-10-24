@@ -1,21 +1,21 @@
-# jsonline-processor
+# jsonlines-processor
 
 [![NPM Version][npm-image]][npm-url]
-[![Build Status](https://travis-ci.org/tilfin/jsonline-processor.svg?branch=master)](https://travis-ci.org/tilfin/jsonline-processor)
+[![Build Status](https://travis-ci.org/tilfin/jsonlines-processor.svg?branch=master)](https://travis-ci.org/tilfin/jsonlines-processor)
 
-JSON log stream processor
+JSON Lines streaming processor for CLI
 
-A JSON log is called newline-delimited JSON and used for structured logs.
+A JSON Lines is called newline-delimited JSON and used for structured logs.
 
 ## Install
 
 ```
-$ npm install -g jsonline-processor
+$ npm install -g jsonlines-processor
 ```
 
 ## How to Use
 
-### Create proc.js
+### Create logic.js
 
 ```js
 exports.process = async (item) => {
@@ -52,5 +52,5 @@ $ gunzip -c application-json.log.gz | jls proc.js > output_json.log
 
   [MIT](LICENSE)
 
-[npm-image]: https://img.shields.io/npm/v/jsonline-processor.svg
-[npm-url]: https://npmjs.org/package/jsonline-processor
+[npm-image]: https://img.shields.io/npm/v/jsonlines-processor.svg
+[npm-url]: https://npmjs.org/package/jsonlines-processor

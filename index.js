@@ -23,7 +23,7 @@ if (process.argv.length > 2) {
 const argv = process.argv.slice(3)
 
 if (!logic) {
-  console.info('Usage) jsonline-processor <logic.js> < STDIN > STDOUT')
+  console.info('Usage) jlp <logic.js> < STDIN > STDOUT')
   console.info(`
 logic.js example
 ---------------
