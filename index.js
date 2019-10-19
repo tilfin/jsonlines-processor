@@ -4,6 +4,7 @@ const path = require('path')
 const { Transform } = require('stream')
 const PromisedLife = require('promised-lifestream')
 const Helper = require('./lib/helper')
+const ProcessWrapper = require('./lib/process_wrapper')
 const transformers = require('./lib/transformers')
 
 let logic = null;
@@ -32,6 +33,13 @@ exports.process = async function(item) {
   // filter
   if (item.target === 'my_require') {
     return item;
+  } else if (item instanceof Array) {
+    // Return multiple items
+    item.forEach(it => {
+      if (it.target === 'my_require') {
+        this.push(it);
+      }
+    });
   }
 }
 
@@ -87,7 +95,13 @@ const streams = [
   new Transform({
     objectMode: true,
     transform(item, _, cb) {
-      proc(item).then(result => cb(null, result)).catch(cb)
+      new ProcessWrapper(proc)
+        .execute(item)
+        .then(result => {
+          result.forEach(it => this.push(it))
+          cb()
+        })
+        .catch(cb)
     }
   })
 ]
