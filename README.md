@@ -45,7 +45,7 @@ exports.after = async function(items) {
 ### Run command
 
 ```
-$ gunzip -c application-json.log.gz | jlp proc.js > output_json.log
+$ gunzip -c application-json.log.gz | jlp logic.js > output_json.log
 ```
 
 ## Helper function
@@ -55,50 +55,61 @@ Following utility methods can be called in `process`, `finalize`, `before` or `a
 ### sort(items, [key], [direct])
 
 #### Arguments
-* items:Array - The array to process
-* [key]:String - Target field name. item itself if not specified
-* [direct]:String - Ascending if not specified, else descending
+
+* `items:Array` - The array to process
+* `[key]:String` - Target field name. item itself if not specified
+* `[direct]:String` - Ascending if not specified, else descending
 
 #### Returns
-* Array - Returns the new array of sorted items
+
+* `Array` - the new array of sorted items
 
 ### keyBy(items, key)
 
 #### Arguments
-* items:Array - The array to process
-* key:String - The iteratee to transform key
+
+* `items:Array` - The array to process
+* `key:String` - The iteratee to transform key
 
 #### Returns
-* Object - Returns the composed aggregate object.
+
+* `Object` - the composed aggregate object.
 
 ### sum(items, [key])
 
 #### Arguments
-* items:Array - The array to process
-* [key]:String - Target field name. item itself if not specified
+
+* `items:Array` - The array to process
+* `[key]:String` - Target field name. item itself if not specified
 
 #### Returns
-* Number - Returns the total value for each items
+
+* `Number` - the total value for each items
 
 ### readJSONLinesFile(fileName)
 
 #### Arguments
-* fileName:String - JSON Lines file path
+
+* `fileName:String` - JSON Lines file path
 
 #### Returns
-* Array - Returns the new array of JSON object
+
+* `Array` - the new array of JSON object
 
 ### readTSVFile(fileName)
 
 #### Arguments
-* fileName:String - TSV file path
+
+* `fileName:String` - TSV file path
 
 #### Returns
-* Array - Returns the new array of array item
+
+* `Array` - Returns the new array of array item
 
 ## Examples
 
 #### example-json.log
+
 ```json
 {"name":"Hanako","age":16,"score":41}
 {"name":"Taro","age":18,"score":81}
@@ -107,6 +118,7 @@ Following utility methods can be called in `process`, `finalize`, `before` or `a
 ```
 
 #### logic1.js
+
 Extracting the name and score of only item whose age is greater than 16, and sorting items by their score in descending order
 
 ```js
