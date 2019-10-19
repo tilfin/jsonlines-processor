@@ -22,6 +22,13 @@ exports.process = async function(item) {
   // filter
   if (item.target === 'my_require') {
     return item;
+  } else if (item instanceof Array) {
+    // Return multiple items
+    item.forEach(it => {
+      if (it.target === 'my_require') {
+        this.push(it);
+      }
+    });
   }
 }
 
