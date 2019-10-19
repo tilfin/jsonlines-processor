@@ -11,6 +11,10 @@
   },
   "author": "Toshimitsu Takahashi",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tilfin/jsonlines-processor.git"
+  },
   "dependencies": {
     "promised-lifestream": "^0.6.0",
     "readline-transform": "^0.9.0"
